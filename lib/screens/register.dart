@@ -116,6 +116,7 @@ class _RegisterState extends State<Register> {
       myAlert(objResponse.code.toString(), objResponse.message.toString());
     });
   }
+  
 
   Future<void> setUpDisplayName() async {
     await firebaseAuth.currentUser().then((response) {
