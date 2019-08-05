@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ung_ssru/screens/my_map.dart';
+import 'package:ung_ssru/screens/show_info.dart';
+import 'package:ung_ssru/screens/show_product.dart';
 
 class MyService extends StatefulWidget {
   @override
@@ -12,7 +15,72 @@ class _MyServiceState extends State<MyService> {
   // Explicit
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String nameString = '';
+  Widget myWidget = Showproduct();
+
   // Method
+  Widget myDivider() {
+    return Divider(
+      height: 5.0,
+      color: Colors.blue[800],
+    );
+  }
+
+  Widget menuShowInfo() {
+    return ListTile(
+      leading: Icon(Icons.account_box),
+      title: Text(
+        'Show Info',
+        style: TextStyle(fontSize: 18.0),
+      ),
+      onTap: () {
+        setState(() {
+          myWidget = ShowInfo();
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
+
+  Widget menuShowMap() {
+    return ListTile(
+      leading: Icon(
+        Icons.map,
+        size: 36.0,
+        color: Colors.blue,
+      ),
+      title: Text(
+        'Show Map',
+        style: TextStyle(fontSize: 18.0),
+      ),
+      onTap: () {
+        setState(() {
+          myWidget = MyMap();
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
+
+  Widget menuShowproduct() {
+    return ListTile(
+      leading: Icon(
+        Icons.face,
+        size: 36.0,
+        color: Colors.green,
+      ),
+      title: Text(
+        'Show Product',
+        style: TextStyle(fontSize: 18.0),
+      ),
+      onTap: () {
+        setState(() {
+          myWidget = Showproduct();
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +100,10 @@ class _MyServiceState extends State<MyService> {
       child: ListView(
         children: <Widget>[
           headMenu(),
+          myDivider(),
+          menuShowproduct(),
+          menuShowMap(),
+          menuShowInfo(),
           signOutAnExit(),
         ],
       ),
@@ -48,15 +120,15 @@ class _MyServiceState extends State<MyService> {
       title: Text(
         'Sign Out & Exit',
         style: TextStyle(fontSize: 18.0),
-      ),onTap: (){
+      ),
+      onTap: () {
         mySignOut();
       },
     );
   }
 
-  Future<void> mySignOut()async{
-
-    await firebaseAuth.signOut(). then((response){
+  Future<void> mySignOut() async {
+    await firebaseAuth.signOut().then((response) {
       exit(0);
     });
   }
@@ -94,7 +166,7 @@ class _MyServiceState extends State<MyService> {
       appBar: AppBar(
         title: Text('My Service'),
       ),
-      body: Text('body'),
+      body: myWidget,
       drawer: showDrawerMenu(),
     );
   }
