@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class QRreader extends StatefulWidget {
   @override
@@ -7,12 +8,17 @@ class QRreader extends StatefulWidget {
 
 class _QRreaderState extends State<QRreader> {
   // Explicit
+  String qrCodeString = 'QRcode';
 
   // Method
 
   Widget showText() {
-    return Container(alignment: Alignment.center,
-      child: Text('QRcode',style: TextStyle(fontSize: 48.0),),
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        '$qrCodeString',
+        style: TextStyle(fontSize: 48.0),
+      ),
     );
   }
 
@@ -20,8 +26,22 @@ class _QRreaderState extends State<QRreader> {
     return RaisedButton.icon(
       icon: Icon(Icons.android),
       label: Text('Read QR code'),
-      onPressed: () {},
+      onPressed: () {
+        qrProcess();
+      },
     );
+  }
+
+  Future<void> qrProcess() async {
+    try {
+      String codeString = await BarcodeScanner.scan();
+
+      if (codeString.length != 0) {
+        setState(() {
+          qrCodeString = codeString;
+        });
+      }
+    } catch (e) {}
   }
 
   @override
